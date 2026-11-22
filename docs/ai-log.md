@@ -1,4 +1,12 @@
-1. Я роблю лабораторну роботу: AI-агент для VS Code Copilot, який у репозиторії
+1. /init
+2. #init.prompt.md
+3. #init.prompt.md
+4. /init дав таку помилку: [Під час запуску `.\ci.bat` на Windows (MSVC) збірка `test_basic.exe` падає з помилкою лінкувальника: `gtest.lib(gtest-all.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MT_StaticRelease' doesn't match value 'MD_DynamicRelease' in test_basic.obj`]. Проаналізуй причину і виправ ІНСТРУКЦІЇ в .github/skills/[...] або .github/prompts/[...], щоб агент генерував правильно. Не правь згенеровані файли напряму.
+5. /check
+6. Створи .github/prompts/create-build.prompt.md.
+Frontmatter: description, agent: build-engineer.
+Розділи: Передумови (є src/main.cpp, src/add.h, src/add.cpp), Дії (виконати skill .github/skills/build-and-test/SKILL.md), Очікувані файли (CMakeLists.txt, tests/test_basic.cpp, ci.sh, ci.bat), Команди перевірки, Повідомлення про помилку, Ідемпотентність.
+7. Я роблю лабораторну роботу: AI-агент для VS Code Copilot, який у репозиторії
 генерує кросплатформний C++ проєкт Hello World (CMake + GoogleTest/CTest) і CI
 на GitHub Actions (Windows, Linux, macOS).
 Зараз я в гілці develop і створюю ТІЛЬКИ інструкції агента (manifest, skills,
@@ -6,7 +14,7 @@ prompts-команди, документацію). Не створюй src/, tes
 їх згенерує агент пізніше в гілці feature.
 Файли створюй по одному, коли я попрошу. Мова інструкцій: українська,
 імена файлів і команд: англійською.
-2. Створи файл .github/agents/build-engineer.agent.md з YAML frontmatter
+8. Створи файл .github/agents/build-engineer.agent.md з YAML frontmatter
 (description, tools) і розділами:
 1. Роль: build engineer для C++/CMake проєктів.
 2. Область відповідальності: scaffold, збірка, юніт-тести, CI.
@@ -21,7 +29,7 @@ prompts-команди, документацію). Не створюй src/, tes
 7. Порядок роботи.
 8. Критерії успішного завершення: існує виконуваний файл hello; тест BasicAddition проходить; ci.yml містить ubuntu/windows/macos і лише викликає ci.sh/ci.bat; build/ і dist/ не під Git; check завершується без помилок.
 9. Поведінка при помилці: зупинитись, показати причину, не вважати роботу успішною.
-3. Створи .github/skills/project-scaffold/SKILL.md.
+9. Створи .github/skills/project-scaffold/SKILL.md.
 Frontmatter: name: project-scaffold, description (коли застосовувати).
 Вхід: language=C++, project_name=hello.
 Вихід: src/main.cpp (друкує "Hello, World!" і використовує add), src/add.h,
@@ -30,7 +38,7 @@ src/add.cpp (int add(int,int)), порожні каталоги tests/ та docs
 Перевірки: src/main.cpp існує; вказана команда запуску (./build/hello або
 build\Release\hello.exe). Типова помилка: файл вже існує з іншим вмістом.
 Додай приклад входу та очікуваного результату.
-4. Створи .github/skills/build-and-test/SKILL.md.
+10. Створи .github/skills/build-and-test/SKILL.md.
 Frontmatter: name: build-and-test, description (коли застосовувати).
 Вхід: наявні src/add.h, src/add.cpp, src/main.cpp.
 Вихід: CMakeLists.txt (cmake_minimum_required 3.14, C++17, бібліотека add_lib,
@@ -44,7 +52,7 @@ ci.bat після кожної команди перевіряє %errorlevel% і
 лежить у build/Release; на Linux/macOS у build/. Ідемпотентність: не дублювати
 блоки в CMakeLists.txt.
 Додай приклад входу та очікуваного результату.
-5. Створи .github/skills/github-actions/SKILL.md.
+11. Створи .github/skills/github-actions/SKILL.md.
 Frontmatter: name: github-actions, description (коли застосовувати).
 Вихід: .github/workflows/ci.yml: тригери push і pull_request на develop та master;
 одна job з matrix os: [ubuntu-latest, windows-latest, macos-latest], fail-fast: false;
@@ -56,21 +64,21 @@ if-no-files-found: error). ВАЖЛИВО: у кроках run файлу ci.yml
 у файлі є три ОС; немає слів token/password/secret.
 Типова помилка: ci.sh без прав на виконання.
 Додай приклад входу та очікуваного результату.
-6. Створи .github/prompts/git-init.prompt.md.
+12. Створи .github/prompts/git-init.prompt.md.
 Frontmatter: description, agent: build-engineer.
 Розділи: Передумови, Дії, Очікувані файли, Команди перевірки, Повідомлення про помилку, Ідемпотентність.
 Дії: перевірити, що поточний каталог є git-репозиторієм (git rev-parse); створити .gitignore або ДОПОВНИТИ його без дублів рядками build/, dist/, out/, .vs/, *.exe, *.obj, *.o, CMakeCache.txt, CMakeFiles/, .env, *.pem, *.key; показати git status.
 Нічого не видаляти.
-7. Створи .github/prompts/create-project.prompt.md.
+13. Створи .github/prompts/create-project.prompt.md.
 Frontmatter: description, agent: build-engineer.
 Розділи: Передумови (git-репозиторій), Дії (виконати інструкції зі skill .github/skills/project-scaffold/SKILL.md з language=C++, project_name=hello), Очікувані файли (src/main.cpp, src/add.h, src/add.cpp), Команди перевірки (src/main.cpp існує), Повідомлення про помилку, Ідемпотентність.
-8. Створи .github/prompts/create-build.prompt.md.
+14. Створи .github/prompts/create-build.prompt.md.
 Frontmatter: description, agent: build-engineer.
 Розділи: Передумови (є src/main.cpp, src/add.h, src/add.cpp), Дії (виконати skill .github/skills/build-and-test/SKILL.md), Очікувані файли (CMakeLists.txt, tests/test_basic.cpp, ci.sh, ci.bat), Команди перевірки, Повідомлення про помилку, Ідемпотентність.
-9. Створи .github/prompts/create-actions.prompt.md.
+15. Створи .github/prompts/create-actions.prompt.md.
 Frontmatter: description, agent: build-engineer.
 Розділи: Передумови (є ci.sh і ci.bat), Дії (виконати skill .github/skills/github-actions/SKILL.md), Очікувані файли (.github/workflows/ci.yml), Команди перевірки (валідність YAML, три ОС, виклик лише ci.sh/ci.bat), Повідомлення про помилку, Ідемпотентність.
-10. Створи .github/prompts/check.prompt.md.
+16. Створи .github/prompts/check.prompt.md.
 Frontmatter: description, agent: build-engineer.
 Режим: ТІЛЬКИ ЧИТАННЯ. Не створювати і не змінювати файли проєкту (тимчасові каталоги build/ дозволені, вони в .gitignore).
 Виконати перевірки і вивести таблицю PASS/FAIL:
@@ -85,8 +93,8 @@ Frontmatter: description, agent: build-engineer.
 9. .gitignore містить build/ і dist/.
 Якщо є хоча б один FAIL: вказати який саме і завершити зі статусом FAILED. Якщо все PASS: статус PASSED.
 Додай розділи: Передумови, Повідомлення про помилку.
-11. Онови README.md (зараз там лише назва репозиторія, збережи її): ПІП [ПІП], група [група], варіант 13 (C++, CMake, GoogleTest/CTest), короткий опис проєкту, розділ "Запуск агента": відкрити папку у VS Code, відкрити Copilot Chat, вибрати агента build-engineer, виконати /init. Додай список commands. Залиш плейсхолдери для ПІП і групи.
-12. Створи docs/architecture.md з розділами:
+17. Онови README.md (зараз там лише назва репозиторія, збережи її): ПІП [ПІП], група [група], варіант 13 (C++, CMake, GoogleTest/CTest), короткий опис проєкту, розділ "Запуск агента": відкрити папку у VS Code, відкрити Copilot Chat, вибрати агента build-engineer, виконати /init. Додай список commands. Залиш плейсхолдери для ПІП і групи.
+18. Створи docs/architecture.md з розділами:
 1. Які проблеми вирішує агент.
 2. Які skills використовує і за що вони відповідають.
 3. Які commands доступні користувачу.
@@ -94,3 +102,44 @@ Frontmatter: description, agent: build-engineer.
 5. Як оркестратор init обробляє помилки.
 6. Таблиця відповідності файлів ролям: agent -> .github/agents/, skills -> .github/skills/, commands -> .github/prompts/.
 7. Примітка, що використано формат VS Code Copilot (custom agents, prompt files, agent skills).
+19. Створи (або, якщо файл уже є, повністю перегенеруй) docs/ai-log.md: нумерований список усіх запитів, які я надсилав тобі в цьому чаті, від першого повідомлення до останнього, по порядку.
+Кожен запит перепиши дослівно, як я його надсилав, нічого не скорочуй і не виправляй. Відповіді в файл не записуй. Без заголовків, вступу, висновку і пояснень, тільки список: 1., 2., 3. і так далі.
+Включи всі мої повідомлення, зокрема повторні запити та запити на виправлення помилок. Поточний запит (про створення цього журналу) не включай. Якщо в якомусь запиті є паролі, токени чи ключі, заміни їх на [приховано] і скажи мені про це.
+20. /init
+21. Створи .github/prompts/git-init.prompt.md.
+Frontmatter: description, agent: build-engineer.
+Розділи: Передумови, Дії, Очікувані файли, Команди перевірки, Повідомлення про помилку, Ідемпотентність.
+Дії: перевірити, що поточний каталог є git-репозиторієм (git rev-parse); створити .gitignore або ДОПОВНИТИ його без дублів рядками build/, dist/, out/, .vs/, *.exe, *.obj, *.o, CMakeCache.txt, CMakeFiles/, .env, *.pem, *.key; показати git status.
+Нічого не видаляти.
+22. Створи .github/prompts/create-project.prompt.md.
+Frontmatter: description, agent: build-engineer.
+Розділи: Передумови (git-репозиторій), Дії (виконати інструкції зі skill .github/skills/project-scaffold/SKILL.md з language=C++, project_name=hello), Очікувані файли (src/main.cpp, src/add.h, src/add.cpp), Команди перевірки (src/main.cpp існує), Повідомлення про помилку, Ідемпотентність.
+23. Створи .github/prompts/init.prompt.md.
+Frontmatter: description, agent: build-engineer.
+Ти оркестратор. Виконуй кроки СТРОГО по порядку, читаючи і виконуючи інструкції з файлів:
+1. .github/prompts/git-init.prompt.md
+2. .github/prompts/create-project.prompt.md
+3. .github/prompts/create-build.prompt.md
+4. .github/prompts/create-actions.prompt.md
+5. .github/prompts/check.prompt.md
+Після кожного кроку перевіряй результат. Якщо крок завершився помилкою: ЗУПИНИСЬ, не виконуй наступні, виведи звіт (який крок, причина, що виправити). Не оголошуй успіх без PASSED від check.
+Повторний запуск не повинен руйнувати чи дублювати наявні файли.
+У кінці виведи таблицю: крок, статус, створені/змінені файли.
+Додай розділи: Передумови, Очікувані файли, Повідомлення про помилку.
+24. /init
+25. /init
+26. /init
+27. #init.prompt.md Виконай інструкції з цього промпту
+28. /check
+29. Створи docs/usage.md: точні команди запуску агента (VS Code, Copilot Chat, агент build-engineer, /init, /check), локальної збірки (./ci.sh на Linux/macOS, ci.bat на Windows), запуску hello (./dist/hello або dist\hello.exe), запуску тестів (ctest --test-dir build -C Release --output-on-failure).
+30. Створи (або, якщо файл уже є, повністю перегенеруй) docs/ai-log.md: нумерований список усіх запитів, які я надсилав тобі в цьому чаті, від першого повідомлення до останнього, по порядку.
+Кожен запит перепиши дослівно, як я його надсилав, нічого не скорочуй і не виправляй. Відповіді в файл не записуй. Без заголовків, вступу, висновку і пояснень, тільки список: 1., 2., 3. і так далі.
+Включи всі мої повідомлення, зокрема повторні запити та запити на виправлення помилок. Поточний запит (про створення цього журналу) не включай. Якщо в якомусь запиті є паролі, токени чи ключі, заміни їх на [приховано] і скажи мені про це.
+31. Онови README.md (зараз там лише назва репозиторія, збережи її): ПІП [LavrivRomanAndriyovych], група [KI404], варіант 13 (C++, CMake, GoogleTest/CTest), короткий опис проєкту, розділ "Запуск агента": відкрити папку у VS Code, відкрити Copilot Chat, вибрати агента build-engineer, виконати /init. Додай список commands. Залиш плейсхолдери для ПІП і групи.
+32. Онови README.md (зараз там лише назва репозиторія, збережи її): ПІП [LavrivRomanAndriyovych], група [KI404], варіант 13 (C++, CMake, GoogleTest/CTest), короткий опис проєкту, розділ "Запуск агента": відкрити папку у VS Code, відкрити Copilot Chat, вибрати агента build-engineer, виконати /init. Додай список commands. Залиш плейсхолдери для ПІП і групи.
+33. Онови (повністю перегенеруй) файл docs/ai-log.md, зібравши єдиний хронологічний нумерований список усіх моїх запитів з усіх чат-сесій цього проєкту (включно з попередніми чатами та поточним), від найпершого повідомлення до останнього.
+Для збору повної історії:
+1. Збережи всі попередні запити, які вже записані у поточному файлі docs/ai-log.md (уникаючи дублікатів).
+2. Знайди локальну історію сесій VS Code для цієї робочої області (у каталозі %APPDATA%\Code\User\workspaceStorage у підпапках chatSessions) та витягни всі мої повідомлення з усіх чатів цього репозиторію у хронологічному порядку.
+Кожен запит перепиши дослівно, як я його надсилав, нічого не скорочуй і не виправляй. Відповіді в файл не записуй. Без заголовків, вступу, висновку і пояснень, тільки список: 1., 2., 3. і так далі.
+Включи всі мої повідомлення, зокрема повторні запити, слеш-команди та запити на виправлення помилок. Поточний запит (про створення цього журналу) не включай. Якщо в якомусь запиті є паролі, токени чи ключі, заміни їх на [приховано] і скажи мені про це.
